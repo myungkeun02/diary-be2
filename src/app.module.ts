@@ -8,7 +8,8 @@ import { PostingController } from './posting/posting.controller';
 import { PostingModule } from './posting/posting.module';
 import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './model/user.model';
+import { User } from './models/user.model';
+import { Post } from './models/post.model';
 @Module({
   imports: [
     UserModule,
@@ -21,7 +22,7 @@ import { User } from './model/user.model';
       username: 'audrms',
       password: 'yss00407209',
       database: 'diary',
-      models: [user, post],
+      models: [User, Post],
     }),
   ],
   controllers: [AppController, UserController, PostingController],

@@ -1,4 +1,11 @@
-import { Model, Column, Table, DataType, ForeignKey, HasMany } from 'sequelize-typescript';
+import {
+  Model,
+  Column,
+  Table,
+  DataType,
+  ForeignKey,
+  HasMany,
+} from 'sequelize-typescript';
 import { Post } from './post.model';
 
 @Table({
