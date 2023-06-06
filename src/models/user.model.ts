@@ -1,4 +1,11 @@
-import { Model, Column, Table, DataType, ForeignKey, HasMany } from 'sequelize-typescript';
+import {
+  Model,
+  Column,
+  Table,
+  DataType,
+  ForeignKey,
+  HasMany,
+} from 'sequelize-typescript';
 import { Post } from './post.model';
 
 @Table({
@@ -25,18 +32,20 @@ export class User extends Model {
   password: string;
 
   @Column({
+    field: 'created_at',
     type: DataType.DATE,
     allowNull: false,
     defaultValue: DataType.NOW,
   })
-  created_at: Date;
+  createdAt: Date;
 
   @Column({
+    field: 'updated_at',
     type: DataType.DATE,
     allowNull: false,
     defaultValue: DataType.NOW,
   })
-  updated_at: Date;
+  updatedAt: Date;
 
   @HasMany(() => Post)
   posts: Post[];

@@ -8,20 +8,26 @@ import { PostingController } from './posting/posting.controller';
 import { PostingModule } from './posting/posting.module';
 import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './model/user.model';
+import { User } from './models/user.model';
+import { Post } from './models/post.model';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 @Module({
   imports: [
     UserModule,
     PostingModule,
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     SequelizeModule.forRoot({
       dialect: 'mysql',
-      host: 'localhost',
+      host: process.env.DB_HOST,
       port: 3306,
-      username: 'audrms',
-      password: 'yss00407209',
-      database: 'diary',
-      models: [user, post],
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
+      models: [User, Post],
     }),
   ],
   controllers: [AppController, UserController, PostingController],
