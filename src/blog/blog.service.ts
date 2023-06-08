@@ -1,24 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Post } from '../models/post.model';
+import { User } from '../models/user.model';
 
 @Injectable()
 export class BlogService {
   constructor(
     @InjectModel(Post)
     private postModel: typeof Post,
+    @InjectModel(User)
+    private userModel: typeof User,
   ) {}
 
-  async writePost(
-    title: string,
-    content: string,
-    userId: number,
-  ): Promise<Post> {
-    const post = await this.postModel.create({
-      title: title,
-      content: content,
-      userId: userId,
+  async getPostsByUserId(userId: number): Promise<any[]> {
+    const posts = await this.postModel.findAll({
+      where: { userId },
+      attributes: ['title', 'created_at', 'updated_at'],
+      include: { model: User, attributes: ['username'] },
     });
-    return post;
+
+    return posts.map((post) => ({
+      title: post.title,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,
+      userName: post.user.username,
+    }));
   }
 }

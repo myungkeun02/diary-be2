@@ -1,21 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
-import { Post } from '../models/post.model';
-import { User } from 'src/models/user.model';
+import { Controller, Get, Param } from '@nestjs/common';
+import { BlogService } from './blog.service';
 
-@Controller('blog')
+@Controller('blogs')
 export class BlogController {
-  @Get('myblog')
-  async getPosts(): Promise<any[]> {
-    const posts = await Post.findAll({
-      attributes: ['title', 'createdAt', 'updatedAt'],
-      include: { model: User, attributes: ['name'] },
-    });
+  constructor(private blogService: BlogService) {}
 
-    return posts.map((post) => ({
-      title: post.title,
-      createdAt: post.createdAt,
-      updatedAt: post.updatedAt,
-      userName: post.user.username,
-    }));
+  @Get(':useri_d')
+  async getPostsByUserId(@Param('user_id') user_id: number): Promise<any[]> {
+    return this.blogService.getPostsByUserId(user_id);
   }
 }
