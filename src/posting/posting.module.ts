@@ -5,10 +5,8 @@ import { Post } from 'src/models/post.model';
 import { PostingController } from './posting.controller';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature([Post])
-  ],
+  imports: [SequelizeModule.forFeature([Post])],
   controllers: [PostingController],
-  providers: [PostingService]
+  providers: [PostingService],
 })
 export class PostingModule {}

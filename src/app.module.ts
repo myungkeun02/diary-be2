@@ -8,6 +8,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { User } from './models/user.model';
 import { Post } from './models/post.model';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { BlogModule } from './blog/blog.module';
 @Module({
   imports: [
     PostingModule,
@@ -24,6 +25,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       database: process.env.DB_DATABASE,
       models: [User, Post],
     }),
+    BlogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
