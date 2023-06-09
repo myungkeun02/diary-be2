@@ -5,7 +5,7 @@ import { BlogService } from './blog.service';
 export class BlogController {
   constructor(private blogService: BlogService) {}
 
-  @Get(':useri_d')
+  @Get(':user_id')
   async getPostsByUserId(@Param('user_id') user_id: number): Promise<any[]> {
     return this.blogService.getPostsByUserId(user_id);
   }
