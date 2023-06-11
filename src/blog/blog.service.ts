@@ -12,9 +12,9 @@ export class BlogService {
     private userModel: typeof User,
   ) {}
 
-  async getPostsByUserId(userId: number): Promise<any[]> {
+  async getPostsByUserId(user_id: number): Promise<any[]> {
     const posts = await this.postModel.findAll({
-      where: { userId },
+      where: { user_id },
       attributes: ['title', 'created_at', 'updated_at'],
       include: { model: User, attributes: ['username'] },
     });

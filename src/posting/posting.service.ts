@@ -10,14 +10,14 @@ export class PostingService {
   ) {}
 
   async writePost(title: string, content: string): Promise<Post> {
-    try {
-      const post = await this.postModel.create({
-        title: title,
-        content: content,
-      });
-      return post;
-    } catch (error) {
-      throw new Error('게시물 작성에 실패했습니다.');
-    }
+    // try {
+    const post = await this.postModel.create({
+      title: title,
+      content: content,
+    });
+    return post;
+    // } catch (error) {
+    //   throw new Error('게시물 작성에 실패했습니다.');
+    // }
   }
 }
