@@ -1,7 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, ForbiddenException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '../models/user.model';
 import { JwtService } from '@nestjs/jwt';
+import { hashSync, compareSync } from 'bcrypt';
+import { async } from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -11,24 +13,22 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<User> {
-    const user = await this.userModel.findOne({ where: { username } });
-    if (user && user.password === password) {
-      return user;
+  async validateUser(username: string, password: string): Promise<any> {
+    const user = await this.findByLogin(username);
+    if (user && compareSync(password, user.password)) {
+      const { password, ...result } = user;
+      const accessToken = await this.jwtService.sign(result);
+      result['token'] = accessToken;
+      return result;
     }
     return null;
   }
 
-  async generateToken(user: User): Promise<string> {
-    const payload = { username: user.username };
-    return this.jwtService.sign(payload);
-  }
-
-  async validateToken(token: string): Promise<any> {
-    try {
-      return this.jwtService.verify(token);
-    } catch (error) {
-      throw new Error('Invalid token');
+  async findByLogin(username: string): Promise<User> {
+    const user = await this.userModel.findOne({ where: { username } });
+    if (!user) {
+      throw new ForbiddenException('아이디와 비밀번호를 다시 확인해주세요.');
     }
+    return user;
   }
 }
