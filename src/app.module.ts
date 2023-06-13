@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PostingController } from './posting/posting.controller';
 import { PostingModule } from './posting/posting.module';
 import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -9,6 +8,8 @@ import { User } from './models/user.model';
 import { Post } from './models/post.model';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BlogModule } from './blog/blog.module';
+require('dotenv').config();
+
 @Module({
   imports: [
     PostingModule,

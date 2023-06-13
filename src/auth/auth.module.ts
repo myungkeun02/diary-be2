@@ -3,22 +3,19 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { User } from '../models/user.model';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './auth.strategy';
+require('dotenv').config();
 
 @Module({
   imports: [
     SequelizeModule.forFeature([User]),
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get<string>(process.env.JWT_SECRET_KEY),
-        signOptions: { expiresIn: '1d' },
-      }),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET_KEY,
+      signOptions: { expiresIn: '2h' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtService, JwtStrategy],
+  providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}

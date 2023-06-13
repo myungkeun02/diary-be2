@@ -1,12 +1,20 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { PostingService } from './posting.service';
+import { JwtAuthGuard } from 'src/auth/auth.guard';
 
 @Controller('posting')
 export class PostingController {
   constructor(private postingService: PostingService) {}
 
   @Post('write')
-  async write(@Body('title') title: string, @Body('content') content: string) {
+  @UseGuards(JwtAuthGuard)
+  async write(
+    @Req() req,
+    @Body('title') title: string,
+    @Body('content') content: string,
+  ) {
+    const username = req.username;
+
     try {
       const save = await this.postingService.writePost(title, content);
       console.log(save);
